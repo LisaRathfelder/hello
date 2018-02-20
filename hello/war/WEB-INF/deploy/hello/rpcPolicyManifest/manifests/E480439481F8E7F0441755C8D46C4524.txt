@@ -1,2 +1,0 @@
-serviceClass: com.oencue.client.GreetingService
-path: 705C3D5607869E249A0A5565FD468561.gwt.rpc
