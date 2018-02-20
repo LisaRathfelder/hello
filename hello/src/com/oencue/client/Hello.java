@@ -37,9 +37,9 @@ public class Hello implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		final Button sendButton = new Button("Send to Server");
+		final Button sendButton = new Button("Send Data to Server");
 		final TextBox nameField = new TextBox();
-		nameField.setText("Your Name");
+		nameField.setText("Name");
 		final Label errorLabel = new Label();
 
 		// We can add style names to widgets
