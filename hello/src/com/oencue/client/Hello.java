@@ -37,7 +37,7 @@ public class Hello implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		final Button sendButton = new Button("Send Data to Server....1");
+		final Button sendButton = new Button("Send Data to Server....12");
 		final TextBox nameField = new TextBox();
 		nameField.setText("Name");
 		final Label errorLabel = new Label();
