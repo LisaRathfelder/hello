@@ -10,21 +10,53 @@ h1 {
   text-align: center;
 }
 
-.sendButton {
-  display: block;
-  font-size: 16pt;
+
+#mainContainer
+{
+width: 80%;
+ margin-left: auto;
+ margin-right: auto;
+
 }
+
+.textBox {
+    width: 20%;
+    padding: 12px 20px;
+    margin: 18px 0;    
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.button {
+	 display: inline-block;
+    width: 20%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+
 
 /** Most GWT widgets already have a style name defined */
 .gwt-DialogBox {
-  width: 400px;
+  margin: auto;
+  margin-top : -20px;
   }
 
 .dialogVPanel {
-  margin: 5px;
-  
+  width: 80%;
+  margin: auto;
 }
 
+.myBox{
+  margin: auto;	
+}
 .serverResponseLabelError {
   color: red;
 }
