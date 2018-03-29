@@ -11,10 +11,22 @@
     <servlet-class>com.oencue.server.GreetingServiceImpl</servlet-class>
   </servlet>
   
+   <servlet>
+    <servlet-name>notemapperServlet</servlet-name>
+    <servlet-class>com.oencue.server.noteMapperImpl</servlet-class>
+  </servlet>
+  
+  
   <servlet-mapping>
     <servlet-name>greetServlet</servlet-name>
     <url-pattern>/hello/greet</url-pattern>
   </servlet-mapping>
+  
+   <servlet-mapping>
+    <servlet-name>notemapperServlet</servlet-name>
+    <url-pattern>/hello/notemapper</url-pattern>
+  </servlet-mapping>
+  
   
   <!-- Default page to serve -->
   <welcome-file-list>

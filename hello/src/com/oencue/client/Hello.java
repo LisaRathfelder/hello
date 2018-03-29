@@ -41,6 +41,7 @@ public class Hello implements EntryPoint {
 	 * Create a remote service proxy to talk to the server-side Greeting service.
 	 */
 	private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
+	private final noteMapperAsync noteMapper = GWT.create(noteMapper.class);
 
 	/**
 	 * This is the entry point method.
@@ -215,7 +216,10 @@ public class Hello implements EntryPoint {
 				sendButton.setEnabled(false);
 				textToServerLabel.setText(textToServer);
 				serverResponseLabel.setText("");
-				greetingService.greetServer(textToServer, new AsyncCallback<String>() {
+				
+				int command = 0;
+				noteMapper.access2Database(textToServer,command, new AsyncCallback<String>() {
+				//greetingService.greetServer(textToServer, new AsyncCallback<String>() {
 					public void onFailure(Throwable caught) {
 						// Show the RPC error message to the user
 						//dialogBox.setText("Remote Procedure Call - Failure");
@@ -226,12 +230,12 @@ public class Hello implements EntryPoint {
 					}
 
 					public void onSuccess(String result) {
-						//dialogBox.setText("Remote Procedure Call");
-						//serverResponseLabel.removeStyleName("serverResponseLabelError");
-						//serverResponseLabel.setHTML(result);
-						//dialogBox.center();
+						dialogBox.setText("Remote Procedure Call");
+						serverResponseLabel.removeStyleName("serverResponseLabelError");
+						serverResponseLabel.setHTML(result);
+						dialogBox.center();
 									
-						//closeButton.setFocus(true);
+						closeButton.setFocus(true);
 						panel1.setVisible(false);
 						panel2.setVisible(true);
 						
