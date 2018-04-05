@@ -73,16 +73,17 @@ public class Hello implements EntryPoint {
 		final VerticalPanel panel2 = new VerticalPanel();
 		final VerticalPanel panel3 = new VerticalPanel();
 		
-		class updatePanels {
-		public void updatePanel(VerticalPanel panel) {
-			panel.setWidth("100%");
-			panel.setHeight("100%");
-			panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-			panel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-			
-		}
-		}
-		updatePanels updater = new updatePanels();
+//		class updatePanels {
+//		public void updatePanel(VerticalPanel panel) {
+//			panel.setWidth("100%");
+//			panel.setHeight("100%");
+//			panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+//			panel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+//			
+//		}
+//		}
+//		updatePanels updater = new updatePanels();
+		updateVPanels updater = new updateVPanels();
 		updater.updatePanel(panel1);
 		updater.updatePanel(panel2);
 		updater.updatePanel(panel3);
