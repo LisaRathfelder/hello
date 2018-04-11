@@ -19,6 +19,18 @@
     <url-pattern>/hello/notemapper</url-pattern>
   </servlet-mapping>
   
+    <servlet>
+    <servlet-name>loginService</servlet-name>
+    <servlet-class>com.oencue.server.LoginServiceImpl</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>loginService</servlet-name>
+    <url-pattern>/hello/login</url-pattern>
+  </servlet-mapping>
+  
+  
+  
   
   <!-- Default page to serve -->
   <welcome-file-list>

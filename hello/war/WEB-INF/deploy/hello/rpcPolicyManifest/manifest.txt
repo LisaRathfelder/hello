@@ -1,3 +1,4 @@
 # Module hello
 # RPC service class, partial path of RPC policy file
-com.oencue.client.GreetingService, 705C3D5607869E249A0A5565FD468561.gwt.rpc
+com.oencue.client.noteMapper, 2E69C52F25F7BA7358700845D4AE0987.gwt.rpc
+com.oencue.client.LoginService, F63E8F6BF538E186C0AC85E696DE0E61.gwt.rpc

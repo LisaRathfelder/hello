@@ -1,6 +1,10 @@
 package com.oencue.client;
 
 import com.oencue.shared.FieldVerifier;
+import com.oencue.shared.LoginInfo;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import com.gargoylesoftware.htmlunit.javascript.host.Window;
 import com.gargoylesoftware.htmlunit.javascript.host.dom.Document;
 import com.google.gwt.core.client.EntryPoint;
@@ -26,6 +30,10 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
+
+import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Window.Location;
+import com.google.gwt.user.client.ui.Anchor;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
@@ -42,16 +50,52 @@ public class Hello implements EntryPoint {
 	 */
 	//private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 	private final noteMapperAsync noteMapper = GWT.create(noteMapper.class);
+	
+	  private static Logger rootLogger = Logger.getLogger("");
+	  
+	  	private LoginInfo loginInfo = null;
 
+	    private VerticalPanel loginPanelx = new VerticalPanel();
+	    private Label loginLabel = new Label(
+	        "Please sign in to your Google Account to access the StockWatcher application.");
+	    private Anchor signInLink = new Anchor("Sign In");
+	  	
+	  
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
+		final Label errorLabel = new Label();
+		errorLabel.setText("ErrorLabel");
+		
+		LoginServiceAsync loginService = GWT.create(LoginService.class);
+	    loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
+	      public void onFailure(Throwable error) {
+	    	  errorLabel.setText("Error " + GWT.getHostPageBaseURL() + " " + error);
+	      }
+
+	      public void onSuccess(LoginInfo result) {
+	        loginInfo = result;
+	        if(loginInfo.isLoggedIn()) {
+	          //loadStockWatcher();
+	        } else {
+	            signInLink.setHref(loginInfo.getLoginUrl());
+			    loginPanelx.add(loginLabel);
+			    loginPanelx.add(signInLink);
+			    RootPanel.get("mainContainer").add(loginPanelx);
+	        }
+	      }
+	    });
+	  
+				
+		
+		
+		
+		
 		final Button sendButton = new Button("Login");
 		final Button newNoteButton = new Button("New Note");
 		final TextBox nameField = new TextBox();
 		nameField.setText("Your Username");
-		final Label errorLabel = new Label();
 		
 		final TextBox nameField2 = new TextBox();
 		nameField2.setText("List of previous Notes");
@@ -67,12 +111,12 @@ public class Hello implements EntryPoint {
 		// Use RootPanel.get() to get the entire body element
 		//RootPanel.get("nameFieldContainer").add(nameField);
 		//RootPanel.get("sendButtonContainer").add(sendButton);
-		//RootPanel.get("errorLabelContainer").add(errorLabel);
+		RootPanel.get("errorLabelContainer").add(errorLabel);
 		
 		final VerticalPanel panel1 = new VerticalPanel();
 		final VerticalPanel panel2 = new VerticalPanel();
 		final VerticalPanel panel3 = new VerticalPanel();
-		
+
 //		class updatePanels {
 //		public void updatePanel(VerticalPanel panel) {
 //			panel.setWidth("100%");
@@ -94,21 +138,23 @@ public class Hello implements EntryPoint {
 
 		panel1.add(nameField);
 		panel1.add(sendButton);
-		panel1.add(errorLabel);
 
 		newNoteButton.getElement().setClassName("button");
 		nameField2.getElement().setClassName("textBox");
 		panel2.add(newNoteButton);
 		panel2.add(nameField2);
+
 		
 		newNoteField.getElement().setClassName("textBox");
 		saveButton.getElement().setClassName("button");
 		panel3.add(newNoteField);
 		panel3.add(saveButton);
 
+
 		RootPanel.get("mainContainer").add(panel1);
 		RootPanel.get("mainContainer").add(panel2);
 		RootPanel.get("mainContainer").add(panel3);
+
 		panel2.setVisible(false);
 		panel3.setVisible(false);
 		
@@ -155,6 +201,7 @@ public class Hello implements EntryPoint {
 				dialogBox.hide();
 				panel2.setVisible(false);
 				panel3.setVisible(true);
+				errorLabel.setText("ErrorLabel");
 				
 			}
 		});
@@ -164,6 +211,9 @@ public class Hello implements EntryPoint {
 			public void onClick(ClickEvent event) {
 	
 				changeView();
+		
+		           rootLogger.log(Level.SEVERE, "pageIndex selected: " );	
+				
 			}
 			
 			private void changeView() {
@@ -179,6 +229,7 @@ public class Hello implements EntryPoint {
 				saveButton.setFocus(true);
 				panel3.setVisible(false);
 				panel2.setVisible(true);
+
 			}
 		});
 		
@@ -239,6 +290,7 @@ public class Hello implements EntryPoint {
 						closeButton.setFocus(true);
 						panel1.setVisible(false);
 						panel2.setVisible(true);
+
 						
 
 					}
