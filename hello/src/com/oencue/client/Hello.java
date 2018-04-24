@@ -29,6 +29,11 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.googlecode.gwt.crypto.bouncycastle.DataLengthException;
+import com.googlecode.gwt.crypto.bouncycastle.InvalidCipherTextException;
+import com.googlecode.gwt.crypto.bouncycastle.digests.SHA1Digest;
+import com.googlecode.gwt.crypto.client.TripleDesCipher;
+import com.googlecode.gwt.crypto.client.TripleDesKeyGenerator;
 import com.google.gwt.user.client.ui.LayoutPanel;
 
 import com.google.gwt.user.client.Cookies;
@@ -60,6 +65,8 @@ public class Hello implements EntryPoint {
 	        "Please sign in to your Google Account to access the StockWatcher application.");
 	    private Anchor signInLink = new Anchor("Sign In");
 	  	
+	    
+	    private TripleDesCipher encryptor;  
 	  
 	/**
 	 * This is the entry point method.
@@ -68,6 +75,7 @@ public class Hello implements EntryPoint {
 		final Label errorLabel = new Label();
 		errorLabel.setText("ErrorLabel");
 		
+
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 	    loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
 	      public void onFailure(Throwable error) {
@@ -234,6 +242,7 @@ public class Hello implements EntryPoint {
 		});
 		
 		
+		
 		// Create a handler for the sendButton and nameField
 		class MyHandler implements ClickHandler, KeyUpHandler {
 			/**
@@ -246,6 +255,7 @@ public class Hello implements EntryPoint {
 			/**
 			 * Fired when the user types in the nameField.
 			 */
+			
 			public void onKeyUp(KeyUpEvent event) {
 				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 					sendNameToServer();
@@ -255,9 +265,80 @@ public class Hello implements EntryPoint {
 			/**
 			 * Send the name from the nameField to the server and wait for a response.
 			 */
+			
+			String getSHA1for(String text) {
+				  SHA1Digest sd = new SHA1Digest();
+				  byte[] bs = text.getBytes();
+				  sd.update(bs, 0, bs.length);
+				  byte[] result = new byte[20];
+				  sd.doFinal(result, 0);
+				  return byteArrayToHexString(result);
+				}
+
+				String byteArrayToHexString(final byte[] b) {
+				  final StringBuffer sb = new StringBuffer(b.length * 2);
+				  for (int i = 0, len = b.length; i < len; i++) {
+				    int v = b[i] & 0xff;
+				    if (v < 16) sb.append('0');
+				    sb.append(Integer.toHexString(v));
+				  }
+				  return sb.toString();
+				}
+				
+		
+				  private String encryptString(String string)
+				    {
+				        try 
+				        {
+				            string = encryptor.encrypt( string );
+				        } 
+				        catch (DataLengthException e1) 
+				        {
+				            e1.printStackTrace();
+				        } 
+				        catch (IllegalStateException e1) 
+				        {
+				            e1.printStackTrace();
+				        } 
+				        catch (InvalidCipherTextException e1) 
+				        {
+				            e1.printStackTrace();
+				        }
+
+				        return string;
+				    }
+
+				    private String decryptString(String string)
+				    {
+				        try 
+				        {
+				            string = encryptor.decrypt(string);
+				        } 
+				        catch (DataLengthException e) 
+				        {
+				            e.printStackTrace();
+				        } catch (IllegalStateException e) 
+				        {
+				            e.printStackTrace();
+				        } catch (InvalidCipherTextException e)
+				        {
+				            e.printStackTrace();
+				        }
+
+				        return string;
+				    }
+				
 			private void sendNameToServer() {
 				// First, we validate the input.
-				errorLabel.setText("");
+				 TripleDesKeyGenerator generator = new TripleDesKeyGenerator();
+				    byte[] key = generator.decodeKey("04578a8f0be3a7109d9e5e86839e3bc41654927034df92ec"); //you can pass your own string here
+
+				    //initializing encryptor with generated key
+				    encryptor = new TripleDesCipher();
+				    encryptor.setKey(key);
+				    
+								
+				errorLabel.setText("password encripted: " + encryptString("password") + " decripted: " +  decryptString(encryptString("password")));
 				String textToServer = nameField.getText();
 				if (!FieldVerifier.isValidName(textToServer)) {
 					errorLabel.setText("Please enter at least four characters");

@@ -18,7 +18,7 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
    <inherits name = "com.google.gwt.logging.Logging"/>                
 
-
+<inherits name='com.googlecode.gwt.crypto.Crypto'/>
   
   <!-- Other module inherits                                      -->
 

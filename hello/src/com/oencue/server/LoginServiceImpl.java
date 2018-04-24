@@ -10,11 +10,16 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class LoginServiceImpl extends RemoteServiceServlet implements
     LoginService {
 
-  public LoginInfo login(String requestUri) {
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+public LoginInfo login(String requestUri) {
     UserService userService = UserServiceFactory.getUserService();
     User user = userService.getCurrentUser();
     LoginInfo loginInfo = new LoginInfo();
-
+	
     if (user != null) {
       loginInfo.setLoggedIn(true);
       loginInfo.setEmailAddress(user.getEmail());

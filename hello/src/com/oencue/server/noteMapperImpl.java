@@ -24,7 +24,7 @@ public class noteMapperImpl  extends RemoteServiceServlet implements noteMapper 
 		// Verify that the input is valid. 
 		
 		Connection con = DBConnection.connection();
-		
+		 String result ="";
 		  try {
 		    	//Leeres SQL Statement anlegen
 		      Statement stmt = con.createStatement();
@@ -38,7 +38,7 @@ public class noteMapperImpl  extends RemoteServiceServlet implements noteMapper 
 		    	  stmt = con.createStatement();
 		    	
 
-		    	  stmt.executeUpdate("INSERT INTO notes.users(idusers,username) VALUES ("+this.maxid +",\"Esra2\")");
+		    	  stmt.executeUpdate("INSERT INTO notes.users(idusers,username) VALUES ("+this.maxid +",\"user"+maxid+"\")");
 		      }
 		    }
 		    catch (SQLException e) {
@@ -48,10 +48,11 @@ public class noteMapperImpl  extends RemoteServiceServlet implements noteMapper 
 		 
 		 try{
 			 Statement stmt = con.createStatement();
-			 ResultSet rs = stmt.executeQuery("select * from users "); 
+			 ResultSet rs = stmt.executeQuery("select * from users  where idusers is not NULL"); 
+			
 			 while (rs.next()){
-				 this.id +=rs.getInt("idusers");
-				 this.name +=rs.getString("username");
+				result +=Integer.toString(rs.getInt("idusers"))+ "&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+rs.getString("username")+"<br>"; 
+				 
 			 }
 		 }
 		 catch (SQLException e){
@@ -77,7 +78,7 @@ public class noteMapperImpl  extends RemoteServiceServlet implements noteMapper 
 
 		return "Accessing Database<br>Text Parameter = " + input + "<br>Command = " + cmd + 
 				"<br><br>I am running " + serverInfo + ".<br><br>It looks like you are using:<br>"
-				+ userAgent+ "<br><br><br> ID: " +  this.id + "<br>NAME: " + this.name + "<br> MAXID:" +this.maxid;
+				+ userAgent+ "<br><br><br> USERID &emsp;&emsp;&emsp;&emsp;USERNAME<br> " +  result + "<br> MAXID:" +this.maxid;
 	}
 
 	/**
