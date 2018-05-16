@@ -20,10 +20,12 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
@@ -144,8 +146,56 @@ public class Hello implements EntryPoint {
 		sendButton.getElement().setClassName("button");
 		nameField.getElement().setClassName("textBox");
 
+		Button[] b=new Button[5];
+
+	    // Create a handler for the A-Z buttons
+	    class ButtonHandler implements ClickHandler {
+	        public void onClick(ClickEvent e) {
+	            Button btn=(Button) e.getSource();
+	            if(Integer.parseInt(btn.getElement().getId()) == 100) {
+		            errorLabel.setText("100:" + btn.getElement().getId());
+
+	            }else {
+		            errorLabel.setText(btn.getElement().getId());
+
+	            }
+	            	
+	       	        }
+	    }
+
+	    ButtonHandler buttonHandler = new ButtonHandler();
+		final FlexTable flexTable = new FlexTable();
+	
+	    for(int i=0;i<5;i++) {
+		   	Label title= new Label();
+	    	title.setText(String.valueOf(i)+":");
+	        b[i] = new Button(String.valueOf(i));
+	        b[i].addStyleName("sendButton");
+	        b[i].getElement().setId(String.valueOf(i+100));
+            flexTable.setWidget(i, 0, title);
+            flexTable.setWidget(i, 1, b[i]);
+
+	        b[i].addClickHandler(buttonHandler);
+	    }
+		
+		
 		panel1.add(nameField);
+		panel1.add(flexTable);
 		panel1.add(sendButton);
+		
+		
+		
+		
+
+	 
+	 
+		
+		
+		
+		
+		
+		
+		
 
 		newNoteButton.getElement().setClassName("button");
 		nameField2.getElement().setClassName("textBox");
